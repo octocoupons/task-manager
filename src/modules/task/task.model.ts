@@ -1,11 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { Schema, model } = mongoose;
 
 const taskSchema = new Schema({
-  text:  String,
+  text: String,
   author: String,
 }, { timestamps: true });
 
 const taskModel = model('task', taskSchema);
 
-module.exports = taskModel;
+export default taskModel;
