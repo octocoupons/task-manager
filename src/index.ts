@@ -1,12 +1,11 @@
-const express = require('express')
-const app = express()
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser')
-const port = 3000
-
-const task = require('./modules/task');
+import express from 'express';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import task from'./modules/task';
 
 const bootServer = async () => {
+    const app: express.Application = express();
+    const port: number = 3000
     app.use(bodyParser.json());
 
     try {

@@ -1,10 +1,10 @@
-const express = require('express')
+import express from 'express';
+import taskModel from './task.model';
 const router = express.Router();
-const taskModel = require('./task.model');
 
 router.post('/', async (req, res) => {
     const { text, author } = req.body;
-    let newTask = ""
+    let newTask: any = ""
     try {
         newTask = await new taskModel({
             text, author
@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/getAll', async (req, res) => {
-    let tasks = []
+    let tasks: any = []
     try {
         tasks = await taskModel.find({}).lean()
     } catch(e) {
@@ -33,4 +33,4 @@ router.get('/getAll', async (req, res) => {
     res.status(201).send(tasks);
 })
 
-module.exports = router;
+export default router;
