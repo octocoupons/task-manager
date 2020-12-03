@@ -5,7 +5,7 @@ import task from './modules/task';
 
 const bootServer = async () => {
   const app: express.Application = express();
-  const port = 3000;
+  const port = 5000;
   app.use(bodyParser.json());
 
   try {

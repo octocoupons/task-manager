@@ -1,14 +1,27 @@
-import mongoose from 'mongoose';
-const { Schema, model } = mongoose;
+import { Schema, Document, model } from 'mongoose';
 
-const taskSchema = new Schema(
+export interface ITask extends Document {
+  text: string;
+  author: string;
+}
+
+// transform for sending as json
+function omitPrivate(_doc: any, obj: any) {
+  delete obj.__v;
+  return obj;
+}
+
+const TaskSchema: Schema = new Schema(
   {
-    text: String,
-    author: String,
+    text: { type: String, required: true },
+    author: { type: String, required: true },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: {
+      transform: omitPrivate,
+    },
+  },
 );
 
-const taskModel = model('task', taskSchema);
-
-export default taskModel;
+export default model<ITask>('Task', TaskSchema);
