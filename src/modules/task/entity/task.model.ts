@@ -6,7 +6,7 @@ export interface ITask extends Document {
 }
 
 // transform for sending as json
-function omitPrivate(_doc: any, obj: any) {
+function omitPrivate(_doc: Document, obj: ITask) {
   delete obj.__v;
   return obj;
 }

@@ -15,7 +15,7 @@ export const createTask = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const getTask = async (req: Request, res: Response): Promise<void> => {
+export const getTask = (req: Request, res: Response): void => {
   const { id } = req.query;
   res.status(201).send(`your ${id} task`);
 };
