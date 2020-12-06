@@ -1,8 +1,7 @@
-import express from 'express';
-import taskModel from './task.model';
-const router = express.Router();
+import { Request, Response } from 'express';
+import taskModel from '../entity/task.model';
 
-router.post('/', async (req, res) => {
+export const createTask = async (req: Request, res: Response): Promise<void> => {
   const { text, author } = req.body;
   try {
     const newTask = await new taskModel({
@@ -14,14 +13,14 @@ router.post('/', async (req, res) => {
     console.log('e -> ', e);
     res.status(400).send('error accured while creating task');
   }
-});
+};
 
-router.get('/', (req, res) => {
+export const getTask = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.query;
   res.status(201).send(`your ${id} task`);
-});
+};
 
-router.get('/getAll', async (req, res) => {
+export const getTaskList = async (req: Request, res: Response): Promise<void> => {
   try {
     const tasks = await taskModel.find({}).select('-__v').lean();
     res.status(201).send(tasks);
@@ -29,6 +28,4 @@ router.get('/getAll', async (req, res) => {
     console.log('e -> ', e);
     res.status(400).send('error accured while getting tasks');
   }
-});
-
-export default router;
+};
