@@ -6,7 +6,7 @@ jest.mock('../entity/task.model');
 jest.mock('express');
 
 describe('Modules > Task > Controller > Task Controller', () => {
-  describe('Create Task', () => {
+  describe('createTask', () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let save;
@@ -112,13 +112,19 @@ describe('Modules > Task > Controller > Task Controller', () => {
 
     it('should return error with 400 code if taskModel.find rejects', async () => {
       // Given
-      taskModel.find = jest.fn().mockRejectedValueOnce('fail');
+      taskModel.find = jest.fn().mockImplementationOnce(() => ({
+        select: jest.fn().mockImplementationOnce(() => ({
+          lean: jest.fn().mockRejectedValue('some error'),
+        })),
+      }));
+      console.log = jest.fn();
 
       // When
       await getTaskList(req as Request, res as Response);
 
       // Then
       expect(taskModel.find).toBeCalledWith({});
+      expect(console.log).toBeCalledWith('e -> ', 'some error');
       expect(res.status).toBeCalledWith(400);
       expect(res.send).toBeCalledWith('error accured while getting tasks');
     });
