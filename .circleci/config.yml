@@ -1,0 +1,27 @@
+version: 2.1
+orbs:
+  node: circleci/node@1.1.6
+  codecov: codecov/codecov@1.0.5
+jobs:
+  lint-test:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+            - run:
+                name: Install All Dependencies for Unit Testing
+                command: yarn install --production=false
+            - run:
+                name: Lint project
+                command: yarn lint
+            - run:
+                name: Get test coverage
+                command: yarn test:coverage
+            - codecov/upload:
+                file: coverage/*.json
+workflows:
+  lint-test:
+    jobs:
+      - lint-test
