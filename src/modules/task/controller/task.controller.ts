@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import taskModel from '../entity/task.model';
+import { logger } from '../../../config/winston';
 
 export const createTask = async (req: Request, res: Response): Promise<void> => {
   const { text, author } = req.body;
@@ -10,8 +11,9 @@ export const createTask = async (req: Request, res: Response): Promise<void> => 
     }).save();
     res.status(201).send(newTask);
   } catch (e) {
-    console.log('e -> ', e);
-    res.status(400).send('error accured while creating task');
+    logger.error('Error occured while creating new task');
+    logger.error(e);
+    res.status(400).send('Error accured while creating task');
   }
 };
 
@@ -25,7 +27,8 @@ export const getTaskList = async (req: Request, res: Response): Promise<void> =>
     const tasks = await taskModel.find({}).select('-__v').lean();
     res.status(201).send(tasks);
   } catch (e) {
-    console.log('e -> ', e);
-    res.status(400).send('error accured while getting tasks');
+    logger.error('Error occured while getting task list');
+    logger.error(e);
+    res.status(400).send('Error accured while getting task list');
   }
 };
