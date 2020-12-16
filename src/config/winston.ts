@@ -2,6 +2,9 @@ import * as winston from 'winston';
 
 const myformat = winston.format.combine(
   winston.format((info) => {
+    if (typeof info.message === 'object') {
+      info.message = '\n' + JSON.stringify(info.message, null, 2);
+    }
     if (info.level.length === 4) {
       info.level = info.level + '  ';
     } else {

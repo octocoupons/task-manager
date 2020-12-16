@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import taskModel from '../entity/task.model';
 import { createTask, getTask, getTaskList } from './task.controller';
+import { logger } from '../../../config/winston';
 
 jest.mock('../entity/task.model');
 jest.mock('express');
@@ -38,8 +39,8 @@ describe('Modules > Task > Controller > Task Controller', () => {
 
     it('should not create new task and return error', async () => {
       // Given
-      save = taskModel.prototype.save = jest.fn().mockRejectedValue('some error');
-      console.log = jest.fn();
+      save = taskModel.prototype.save = jest.fn().mockRejectedValue('Database write error');
+      logger.error = jest.fn();
 
       // When
       await createTask(req as Request, res as Response);
@@ -47,9 +48,11 @@ describe('Modules > Task > Controller > Task Controller', () => {
       // Then
       expect(taskModel).toBeCalledWith(req.body);
       expect(save).toBeCalled();
-      expect(console.log).toBeCalledWith('e -> ', 'some error');
+      expect(logger.error).toHaveBeenNthCalledWith(1, 'Error occured while creating new task');
+      expect(logger.error).toHaveBeenNthCalledWith(2, 'Database write error');
+
       expect(res.status).toBeCalledWith(400);
-      expect(res.send).toBeCalledWith('error accured while creating task');
+      expect(res.send).toBeCalledWith('Error accured while creating task');
     });
   });
 
@@ -114,19 +117,20 @@ describe('Modules > Task > Controller > Task Controller', () => {
       // Given
       taskModel.find = jest.fn().mockImplementationOnce(() => ({
         select: jest.fn().mockImplementationOnce(() => ({
-          lean: jest.fn().mockRejectedValue('some error'),
+          lean: jest.fn().mockRejectedValue('Database write error'),
         })),
       }));
-      console.log = jest.fn();
+      logger.error = jest.fn();
 
       // When
       await getTaskList(req as Request, res as Response);
 
       // Then
       expect(taskModel.find).toBeCalledWith({});
-      expect(console.log).toBeCalledWith('e -> ', 'some error');
+      expect(logger.error).toHaveBeenNthCalledWith(1, 'Error occured while getting task list');
+      expect(logger.error).toHaveBeenNthCalledWith(2, 'Database write error');
       expect(res.status).toBeCalledWith(400);
-      expect(res.send).toBeCalledWith('error accured while getting tasks');
+      expect(res.send).toBeCalledWith('Error accured while getting task list');
     });
   });
 });
