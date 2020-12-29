@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import taskRouter from './modules/task/router/task.router';
+import { logger } from './config/winston';
 
 const bootServer = async () => {
   const app: express.Application = express();
@@ -13,8 +14,9 @@ const bootServer = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('MongoDB connected');
+    logger.info('MongoDB connected');
   } catch (e) {
+    logger.error('MongoDB failed to connected');
     throw new Error(e);
   }
 
@@ -24,8 +26,14 @@ const bootServer = async () => {
 
   app.use('/api/task', taskRouter);
   app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    logger.info(`Example app listening at http://localhost:${port}`);
   });
 };
 
-bootServer();
+bootServer()
+  .then(() => {
+    logger.info(`Server has booted`);
+  })
+  .catch(() => {
+    logger.error(`Server has failed to boot`);
+  });
