@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import taskRouter from './modules/task/router/task.router';
 import { logger } from './config/winston';
 
-const bootServer = async () => {
+export const bootServer = async (): Promise<void> => {
   const app: express.Application = express();
   const port = 5000;
   app.use(bodyParser.json());
@@ -32,8 +32,8 @@ const bootServer = async () => {
 
 bootServer()
   .then(() => {
-    logger.info(`Server has booted`);
+    logger.info('Server has booted');
   })
   .catch(() => {
-    logger.error(`Server has failed to boot`);
+    logger.error('Server has failed to boot');
   });
