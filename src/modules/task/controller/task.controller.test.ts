@@ -74,11 +74,11 @@ describe('Modules > Task > Controller > Task Controller', () => {
     });
 
     it('should get the id from query param and return result', async () => {
-      // Given 
+      // Given
       const foundTask: any = {
         _id: mongoose.Types.ObjectId('5fcb981a7319a26a419c178c'),
         author: 'author',
-        text: 'text'
+        text: 'text',
       };
       taskEntity.findById = jest.fn().mockImplementationOnce(() => ({
         select: jest.fn().mockImplementationOnce(() => ({
@@ -91,17 +91,15 @@ describe('Modules > Task > Controller > Task Controller', () => {
 
       // Then
       expect(res.status).toBeCalledWith(201);
-      expect(res.send).toBeCalledWith(
-        {
-          id: '5fcb981a7319a26a419c178c',
-          author: 'author',
-          text: 'text'
-        }
-      );
+      expect(res.send).toBeCalledWith({
+        id: '5fcb981a7319a26a419c178c',
+        author: 'author',
+        text: 'text',
+      });
     });
 
     it('should return 404 if findById returns null', async () => {
-      // Given 
+      // Given
       const foundTask = null;
       taskEntity.findById = jest.fn().mockImplementationOnce(() => ({
         select: jest.fn().mockImplementationOnce(() => ({
@@ -133,13 +131,13 @@ describe('Modules > Task > Controller > Task Controller', () => {
     });
 
     it('should return edited task', async () => {
-      // Given 
+      // Given
       req = ({ body: { id: '5fcb981a7319a26a419c178c', text: 'text123' } } as unknown) as Request;
 
       const editedTask: any = {
         _id: mongoose.Types.ObjectId('5fcb981a7319a26a419c178c'),
         author: 'asd@asd.com',
-        text: 'edited'
+        text: 'edited',
       };
       taskEntity.findOneAndUpdate = jest.fn().mockImplementationOnce(() => ({
         select: jest.fn().mockImplementationOnce(() => ({
@@ -152,17 +150,15 @@ describe('Modules > Task > Controller > Task Controller', () => {
 
       // Then
       expect(res.status).toBeCalledWith(201);
-      expect(res.send).toBeCalledWith(
-        {
-          id: '5fcb981a7319a26a419c178c',
-          author: 'asd@asd.com',
-          text: 'edited'
-        }
-      );
+      expect(res.send).toBeCalledWith({
+        id: '5fcb981a7319a26a419c178c',
+        author: 'asd@asd.com',
+        text: 'edited',
+      });
     });
 
     it('should return 404 if findOneAndUpdate returns null', async () => {
-      // Given 
+      // Given
       const editedTask = null;
       taskEntity.findOneAndUpdate = jest.fn().mockImplementationOnce(() => ({
         select: jest.fn().mockImplementationOnce(() => ({
@@ -194,32 +190,29 @@ describe('Modules > Task > Controller > Task Controller', () => {
     });
 
     it('should delete task and return 201', async () => {
-      // Given 
+      // Given
       req = ({ query: { id: '5fcb981a7319a26a419c178c' } } as unknown) as Request;
 
       const deletedTask: any = {
         _id: mongoose.Types.ObjectId('5fcb981a7319a26a419c178c'),
         author: 'asd@asd.com',
-        text: 'deleted'
+        text: 'deleted',
       };
-      taskEntity.findOneAndDelete = jest.fn().mockResolvedValue(deletedTask),
-
-      //When
-      await deleteTask(req as Request, res as Response);
+      (taskEntity.findOneAndDelete = jest.fn().mockResolvedValue(deletedTask)),
+        //When
+        await deleteTask(req as Request, res as Response);
 
       // Then
       expect(res.status).toBeCalledWith(201);
       expect(res.send).toBeCalled();
-
     });
 
     it('should return 404 if findOneAndUpdate returns null', async () => {
-      // Given 
+      // Given
       const deletedTask = null;
-      taskEntity.findOneAndDelete = jest.fn().mockResolvedValue(deletedTask),
-
-      //When
-      await deleteTask(req as Request, res as Response);
+      (taskEntity.findOneAndDelete = jest.fn().mockResolvedValue(deletedTask)),
+        //When
+        await deleteTask(req as Request, res as Response);
 
       // Then
       expect(res.status).toBeCalledWith(404);

@@ -8,8 +8,9 @@
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
     "test": "jest",
+    "lint:test:coverage": "yarn format && jest --coverage",
     "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch --coverage"
   },
   "repository": {
     "type": "git",
@@ -49,7 +50,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint && yarn test"
+      "pre-commit": "yarn format && yarn test"
     }
   }
 }
