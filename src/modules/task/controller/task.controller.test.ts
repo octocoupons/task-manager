@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import taskEntity, { ITask } from '../entity/task.entity';
-import { TaskModel } from '../model/task.model';
+import taskEntity from '../entity/task.entity';
 import { createTask, getTask, editTask, deleteTask, getTaskList } from './task.controller';
 import { logger } from '../../../config/winston';
 import mongoose from 'mongoose';
