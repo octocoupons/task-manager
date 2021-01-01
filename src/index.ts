@@ -3,14 +3,16 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import taskRouter from './modules/task/router/task.router';
 import { logger } from './config/winston';
+import * as dotenv from 'dotenv';
 
-export const bootServer = async (): Promise<void> => {
+export const bootServer = async (): Promise<express.Application> => {
+  dotenv.config();
+
   const app: express.Application = express();
-  const port = 5000;
   app.use(bodyParser.json());
 
   try {
-    await mongoose.connect('mongodb://localhost:27017/task-db', {
+    await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -25,13 +27,15 @@ export const bootServer = async (): Promise<void> => {
   });
 
   app.use('/api/task', taskRouter);
-  app.listen(port, () => {
-    logger.info(`Example app listening at http://localhost:${port}`);
-  });
+
+  return app;
 };
 
 bootServer()
-  .then(() => {
+  .then((app) => {
+    app.listen(process.env.PORT, () => {
+      logger.info(`Task Manager app listening at http://localhost:${process.env.PORT}`);
+    });
     logger.info('Server has booted');
   })
   .catch(() => {
