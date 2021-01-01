@@ -33,9 +33,8 @@ export const bootServer = async (): Promise<express.Application> => {
 
 bootServer()
   .then((app) => {
-    const port = 5000;
-    app.listen(port, () => {
-      logger.info(`Example app listening at http://localhost:${port}`);
+    app.listen(process.env.PORT, () => {
+      logger.info(`Task Manager app listening at http://localhost:${process.env.PORT}`);
     });
     logger.info('Server has booted');
   })
