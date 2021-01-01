@@ -5,7 +5,6 @@ const config: Config.InitialOptions = {
   roots: ['<rootDir>/src'],
   collectCoverageFrom: [
     'src/**/*.ts',
-    '!src/index.ts',
     '!src/**/config/**',
     '!src/**/*.router.ts',
     '!src/**/*.validation.ts',
