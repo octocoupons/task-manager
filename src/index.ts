@@ -3,13 +3,16 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import taskRouter from './modules/task/router/task.router';
 import { logger } from './config/winston';
+import * as dotenv from 'dotenv';
 
 export const bootServer = async (): Promise<express.Application> => {
+  dotenv.config();
+
   const app: express.Application = express();
   app.use(bodyParser.json());
 
   try {
-    await mongoose.connect('mongodb://localhost:27017/task-db', {
+    await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
