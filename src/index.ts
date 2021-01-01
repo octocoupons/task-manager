@@ -4,9 +4,8 @@ import bodyParser from 'body-parser';
 import taskRouter from './modules/task/router/task.router';
 import { logger } from './config/winston';
 
-export const bootServer = async (): Promise<void> => {
+export const bootServer = async (): Promise<express.Application> => {
   const app: express.Application = express();
-  const port = 5000;
   app.use(bodyParser.json());
 
   try {
@@ -25,13 +24,16 @@ export const bootServer = async (): Promise<void> => {
   });
 
   app.use('/api/task', taskRouter);
-  app.listen(port, () => {
-    logger.info(`Example app listening at http://localhost:${port}`);
-  });
+
+  return app;
 };
 
 bootServer()
-  .then(() => {
+  .then((app) => {
+    const port = 5000;
+    app.listen(port, () => {
+      logger.info(`Example app listening at http://localhost:${port}`);
+    });
     logger.info('Server has booted');
   })
   .catch(() => {
