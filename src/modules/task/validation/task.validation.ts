@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
-import { query, body } from 'express-validator/check';
+import { query, body } from 'express-validator';
 
 export const returnValidationErrors = (req: Request, res: Response, next: NextFunction): Response | void => {
   const errors = validationResult(req);

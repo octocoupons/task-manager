@@ -1,6 +1,8 @@
-import type { Config } from '@jest/types';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const tsconfig = require('./tsconfig.json');
+const moduleNameMapper = require('tsconfig-paths-jest')(tsconfig);
 
-const config: Config.InitialOptions = {
+module.exports = {
   clearMocks: true,
   roots: ['<rootDir>/src'],
   collectCoverageFrom: ['src/**/*.ts', '!src/**/config/**', '!src/**/types/**', '!src/**/*.entity.ts'],
@@ -9,6 +11,5 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  moduleNameMapper,
 };
-
-export default config;

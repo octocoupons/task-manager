@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon -r tsconfig-paths/register src/index.ts",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
     "test": "jest",
@@ -38,8 +38,8 @@
     "@types/jest": "^26.0.16",
     "@types/mongoose": "^5.10.1",
     "@types/node": "^14.14.10",
-    "@types/winston": "^2.4.4",
     "@types/supertest": "^2.0.10",
+    "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
     "eslint": "^7.14.0",
@@ -50,6 +50,8 @@
     "prettier": "^2.2.1",
     "ts-jest": "^26.4.4",
     "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "tsconfig-paths-jest": "^0.0.1",
     "typescript": "^4.1.2"
   },
   "husky": {

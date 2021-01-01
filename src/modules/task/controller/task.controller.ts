@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import taskEntity from '../entity/task.entity';
-import { TaskModel } from '../model/task.model';
-import { logger } from '../../../config/winston';
+import taskEntity from '@task/entity/task.entity';
+import { TaskModel } from '@task/model/task.model';
+import { logger } from '@config/winston';
 
 export const createTask = async (req: Request, res: Response): Promise<Response> => {
   const { text, author } = req.body;
@@ -21,13 +21,12 @@ export const createTask = async (req: Request, res: Response): Promise<Response>
 export const getTask = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.query;
   const task = await taskEntity.findById(id).select('-__v').lean();
-  if (!task)
-    return res.status(404).send('Task with given id not found.');
-  
+  if (!task) return res.status(404).send('Task with given id not found.');
+
   const taskModel: TaskModel = {
     id: task._id.toString(),
     text: task.text,
-    author: task.author
+    author: task.author,
   };
   return res.status(201).send(taskModel);
 };
@@ -41,7 +40,7 @@ export const editTask = async (req: Request, res: Response): Promise<Response> =
   const taskModel: TaskModel = {
     id: task._id.toString(),
     text: task.text,
-    author: task.author
+    author: task.author,
   };
   return res.status(201).send(taskModel);
 };
