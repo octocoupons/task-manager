@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import taskRouter from './modules/task/router/task.router';
-import { logger } from './config/winston';
+import taskRouter from '@task/router/task.router';
+import { logger } from '@app/config/winston';
 import * as dotenv from 'dotenv';
 
 export const bootServer = async (): Promise<express.Application> => {
