@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import { createTask, getTask, editTask, deleteTask, getTaskList } from '../controller/task.controller';
+import { createTask, getTask, editTask, deleteTask, getTaskList } from '@task/controller/task.controller';
 import {
   createTaskValidation,
   getTaskValidation,
